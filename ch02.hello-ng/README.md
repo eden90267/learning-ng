@@ -98,4 +98,59 @@ main.ts 檔案部分大部分是通用的，通常無需修改此進入點檔案
 
 ### app.module.ts
 
-這是應用程式原始碼的啟動位置。應用程式模組檔案可視為應用程式的核心組態，載入
+這是應用程式原始碼的啟動位置。應用程式模組檔案可視為應用程式的核心組態，載入相關與必要的相依檔案、宣告使用的元件、標記應用程式的主要進入點元件：
+
+```javascript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+
+@NgModule({                 // NgModule 這個 TypeScript 的標記指出此類別定義為一個 Angular 模組
+  declarations: [           // 宣告應用程式使用的元件 or 指示
+    AppComponent
+  ],
+  imports: [                // 匯入其他功能模組
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent] // 啟動應用程式的進入點元件
+})
+export class AppModule { }
+```
+
+TypeScript 專屬的功能：注釋，它能讓我們以注釋與屬性以及元功能修飾類別
+
+Angular 大量使用注釋，例如使用模組與組件的注釋。
+
+其核心：
+
+- declarations：定義此模組中可用於此 HTML 範圍內的所有元件。所有元件必須在使用前宣告
+- imports：你不會建構應用程式的每一個功能，imports 陣列可匯入其他 Angular 應用程式與函式庫模組，並利用這些元件、服務、與其他已經寫在這些模組中的功能
+- bootstrap：bootstrap 陣列定義應用程式的進入點元件。若未將主元件加入，則應用程式不會啟動，因為 Angular 不知道要從 index.html 中找什麼元素
+
+加入
+
+- 新元件
+- 服務
+- 函式庫
+- 模組
+
+通常需要修改這個檔案 (沒使用 CLI 的話)
+
+### 根元件 - AppComponent
+
+它是真正提供應用程式功能的 Angular 程式碼，是主要元件：
+
+```javascript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',                // 此 DOM 選擇器會被轉譯成此元件的一個實例
+  templateUrl: './app.component.html', // 此元件的 html 模板，此例中為指向它的 URL
+  styleUrls: ['./app.component.scss']  // 元件專屬的樣式表，同樣指向另一個檔案
+})
+export class AppComponent {            // 元件類別與成員和樣式
+  title = 'stock-market';
+}
+```
